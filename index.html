@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horizon Memories - Your Digital Time Capsule</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to bottom, #d8c7b3, #b8a594);
+            color: #2d3748;
+            overflow-x: hidden;
+        }
+        .nav-sticky {
+            background: rgba(229, 217, 198, 0.9);
+            backdrop-filter: blur(5px);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+        }
+        .modal-content {
+            background: #e5d9c6;
+            padding: 2rem;
+            border-radius: 1rem;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            color: #2d3748;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .flip-card {
+            perspective: 1000px;
+            height: 200px;
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            background: #e5d9c6;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            text-align: center;
+            color: #2d3748;
+        }
+        .flip-card-back {
+            transform: rotateY(180deg);
+            background: #ff9a8b;
+        }
+        button, a {
+            color: #2d3748;
+        }
+        .action-btn {
+            background-color: #ff6f61;
+            color: #ffffff;
+        }
+        .action-btn:hover {
+            background-color: #468585;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <header class="nav-sticky fixed top-0 w-full p-4 flex justify-between items-center z-10">
+        <div class="flex items-center">
+            <h1 class="text-2xl font-handwritten">Horizon Memories</h1>
+            <p class="ml-2 text-sm hidden md:block">Save Today, Open Tomorrow</p>
+        </div>
+        <nav class="flex space-x-4 items-center">
+            <button class="hover:text-teal modal-btn" data-modal="home-modal">Home</button>
+            <button class="hover:text-teal modal-btn" data-modal="pricing-modal">Pricing</button>
+            <button class="hover:text-teal modal-btn" data-modal="roadmap-modal">Roadmap</button>
+            <a href="./plans/" class="action-btn px-6 py-3 rounded-full text-lg">Start Free</a>
+            <a href="#" class="border border-slate px-6 py-3 rounded-full hover:text-teal">Log In</a>
+        </nav>
+    </header>
+
+    <div id="home-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn absolute top-2 right-2 hover:text-teal text-xl">X</button>
+            <h2 class="text-2xl font-bold mb-4">Welcome to Horizon Memories</h2>
+            <p class="mb-4">We’re building a space where you can preserve your digital life—videos, audio, messages, and more—for the future. Whether it’s a note to yourself or a gift for someone else, we’re here to keep it safe until the right moment.</p>
+            <p>Stay tuned as we develop this—your memories deserve a home. Go premium for 10 capsules, 25GB, and unlimited flexibility!</p>
+        </div>
+    </div>
+    <div id="pricing-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn absolute top-2 right-2 hover:text-teal text-xl">X</button>
+            <h2 class="text-2xl font-bold mb-4">Pricing</h2>
+            <p class="mb-4">Here’s how we’re setting this up—premium’s the way to go:</p>
+            <ul class="list-disc list-inside mb-4">
+                <li><strong>Free Tier</strong>: One capsule, 250MB total storage, photos and text files only, max 5-year unlock date. A taste, not the full meal.</li>
+                <li><strong>Premium (TBD/month)</strong>: 10 capsules included (up to 20 max), 25GB total storage split across capsules, all file types (videos, audio, docs), unlock dates with no time limit, plus collaboration and early access. Want more than 10 capsules? Add them for a small one-time fee per capsule—each new one takes a partition of your 25GB.</li>
+            </ul>
+            <p class="mb-4">Free’s a teaser—fine for a small photo or note. Premium’s the real deal: 10 capsules to start, 25GB to split as you like (one big 25GB capsule or 10 smaller ones), and no limits on time. Need more? Pay a small fee per extra capsule (up to 20 total), carving out space from your 25GB. Your rate’s locked forever—whatever you sign up for stays fixed unless you cancel. Plan tweaks? We’ll negotiate a fair bump above what you’re paying. If we ever go under, we’ll email you a warning, and you’ll have at least 3 months to grab your capsules.</p>
+        </div>
+    </div>
+    <div id="see-how-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn absolute top-2 right-2 hover:text-teal text-xl">X</button>
+            <h2 class="text-2xl font-bold mb-4">See How It Works</h2>
+            <p class="mb-4"><strong>Our Business Model:</strong> Freemium, but premium’s the star. Free gets you one capsule, 250MB, photos and text, 5-year max—barely scratches the surface. Premium (TBD/month) gives you 10 capsules (up to 20 with a fee), 25GB total storage, all file types, and unlimited unlock dates. Use one capsule for all 25GB or split it across 10—your call. Extra capsules cost a small one-time fee, partitioning your 25GB further. Your rate sticks until you cancel; plan changes, we’ll negotiate a fair increase. If we shut down, we’ll email you, and you’ve got at least 3 months to retrieve your capsules.</p>
+            <p class="mb-4"><strong>How We Do It:</strong> Sign up, upload your files (photos/text for free, anything for premium), and set an unlock date (5-year cap for free, unlimited for premium). Premium users get 10 capsules, each with a chunk of your 25GB—use one for everything or spread it out. Add more (up to 20) with a fee; each new capsule splits your remaining space. We encrypt it all, store it on secure cloud servers, and unlock it on your date. Premium extras: collaboration, blockchain logs. Free’s basic—upgrade for the full power.</p>
+            <p class="mb-4"><strong>Why It Matters:</strong> Memories deserve space and time. Free’s tiny—250MB, 5 years. Premium’s built for families, big moments, forever timelines: 25GB, 10 capsules, expandable to 20. Privacy’s locked in tight either way.</p>
+            <p><strong>Next Steps:</strong> Try free, but go premium for 10 capsules and 25GB of freedom. More features roll out for paid members first—lock in your rate now!</p>
+        </div>
+    </div>
+    <div id="roadmap-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn absolute top-2 right-2 hover:text-teal text-xl">X</button>
+            <h2 class="text-2xl font-bold mb-4">Roadmap</h2>
+            <p class="mb-4">Here’s where we’re headed—premium users get priority:</p>
+            <ul class="list-disc list-inside mb-4">
+                <li><strong>Q2 2025</strong>: Beta launch—free tier (250MB, 5-year max, photos/text) and premium (10 capsules, 25GB, all files) live.</li>
+                <li><strong>Q3 2025</strong>: Collaboration tools (premium only)—invite others to your capsules.</li>
+                <li><strong>Q4 2025</strong>: Blockchain integration—tamper-proof unlock dates (premium feature).</li>
+                <li><strong>Q1 2026</strong>: AI suggestions—auto-generate capsule ideas (premium only).</li>
+                <li><strong>Mid-2026</strong>: Mobile app—full access (free tier limited, premium gets all 10+ capsules).</li>
+                <li><strong>Late 2026</strong>: Storage bump—50GB+ for premium (more partitions!), free stays at 250MB.</li>
+            </ul>
+            <p>Free’s a start, but premium’s the future—10 capsules, 25GB, expandable to 20 with a fee. Lock in your flat rate now—stays fixed until you cancel, and we’ll negotiate any changes together! If we go under, we’ll send an email warning, and you’ll have at least 3 months to collect your capsules.</p>
+        </div>
+    </div>
+    <div id="about-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn absolute top-2 right-2 hover:text-teal text-xl">X</button>
+            <h2 class="text-2xl font-bold mb-4">About Us</h2>
+            <p class="mb-4">Horizon Memories is a passion project in development, aimed at giving you a way to lock away your digital keepsakes for the future.</p>
+            <p>We’re a small team obsessed with nostalgia and tech. Go premium for 10 capsules and 25GB—support us and unlock the full experience!</p>
+        </div>
+    </div>
+    <div id="contact-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn absolute top-2 right-2 hover:text-teal text-xl">X</button>
+            <h2 class="text-2xl font-bold mb-4">Contact Us</h2>
+            <p class="mb-4">Got questions or ideas? We’re all ears during this development phase.</p>
+            <p>Reach out at <a href="mailto:hello@horizonmemories.com" class="text-teal hover:underline">hello@horizonmemories.com</a> or follow us on X for updates.</p>
+        </div>
+    </div>
+    <div id="privacy-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn absolute top-2 right-2 hover:text-teal text-xl">X</button>
+            <h2 class="text-2xl font-bold mb-4">Privacy</h2>
+            <p class="mb-4">Your memories are yours. We’re designing Horizon Memories with top-notch encryption to keep your files private and secure.</p>
+            <p>No data sharing, no nonsense—full policy coming soon. Premium gets priority support for any privacy concerns!</p>
+        </div>
+    </div>
+    <div id="terms-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn absolute top-2 right-2 hover:text-teal text-xl">X</button>
+            <h2 class="text-2xl font-bold mb-4">Terms</h2>
+            <p class="mb-4">By using Horizon Memories, you agree to play nice. We’re still drafting the fine print, but expect standard stuff:</p>
+            <ul class="list-disc list-inside mb-4">
+                <li>No illegal uploads.</li>
+                <li>We’re not liable for lost time-travel dreams.</li>
+                <li>If the service or company goes under, we’ll send an email warning, and you’ll have at least 3 months to retrieve your capsules.</li>
+            </ul>
+            <p class="mt-4">More to come as we launch—premium users get early updates on policy changes.</p>
+        </div>
+    </div>
+
+    <section class="min-h-screen flex flex-col justify-center items-center text-center px-4">
+        <h2 id="hero-title" class="text-4xl md:text-5xl font-bold mb-4"></h2>
+        <p class="text-lg mb-6">Store your videos, messages, and moments—unlock them when the time’s right.</p>
+        <div class="flex space-x-4 buttons">
+            <a href="./plans/" class="action-btn px-6 py-3 rounded-full text-lg">Try It Free</a>
+            <button class="action-btn px-6 py-3 rounded-full text-lg modal-btn" data-modal="see-how-modal">See How</button>
+        </div>
+    </section>
+
+    <section class="py-16 px-4 bg-taupe">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 features">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <span class="text-4xl mb-4">🎥</span>
+                        <h3 class="text-xl font-semibold mb-2">Capture Every Moment</h3>
+                        <p>Upload your media easily.</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>Drag and drop videos, audio clips, photos, or text files—our system supports all your formats for a seamless experience.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <span class="text-4xl mb-4">🔒</span>
+                        <h3 class="text-xl font-semibold mb-2">Set the Date</h3>
+                        <p>Choose your unlock time.</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>Pick any future date—next month or 20 years from now—and we’ll lock it away until then, safe and sound.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <span class="text-4xl mb-4">❤️</span>
+                        <h3 class="text-xl font-semibold mb-2">Share the Joy</h3>
+                        <p>Include others in the fun.</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>Invite friends or family to add to your capsule or unlock it with you—perfect for group memories or surprises.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 px-4 bg-mutedteal text-center cta">
+        <h2 class="text-3xl font-bold mb-4">Ready to Start Your Story?</h2>
+        <p class="text-lg mb-6">No cost to try—create your first capsule today.</p>
+        <a href="./plans/" class="action-btn px-6 py-3 rounded-full text-lg">Get Started</a>
+    </section>
+
+    <footer class="py-8 px-4 bg-darkertaupe text-center">
+        <div class="flex justify-center space-x-4 mb-4 footer-links">
+            <button class="hover:text-teal modal-btn" data-modal="about-modal">About</button>
+            <button class="hover:text-teal modal-btn" data-modal="contact-modal">Contact</button>
+            <button class="hover:text-teal modal-btn" data-modal="privacy-modal">Privacy</button>
+            <button class="hover:text-teal modal-btn" data-modal="terms-modal">Terms</button>
+        </div>
+        <p>Horizon Memories © 2025 - Where Time Meets Tomorrow</p>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        new Typed('#hero-title', {
+            strings: ["Your Time Capsule, Reimagined"],
+            typeSpeed: 50,
+            showCursor: false,
+            onComplete: () => {
+                anime({
+                    targets: '.buttons a, .buttons button',
+                    translateY: [50, 0],
+                    opacity: [0, 1],
+                    easing: 'easeOutElastic(1, .8)',
+                    duration: 1000,
+                    delay: anime.stagger(200)
+                });
+            }
+        });
+
+        gsap.from('.features .flip-card', {
+            opacity: 0,
+            y: 100,
+            duration: 1,
+            stagger: 0.3,
+            scrollTrigger: {
+                trigger: '.features',
+                start: 'top 80%',
+            }
+        });
+
+        anime({
+            targets: '.cta h2, .cta p, .cta a',
+            translateY: [50, 0],
+            opacity: [0, 1],
+            easing: 'easeOutBounce',
+            duration: 1200,
+            delay: anime.stagger(300),
+            scrollTrigger: {
+                trigger: '.cta',
+                start: 'top 80%',
+            }
+        });
+
+        gsap.from('.footer-links button', {
+            opacity: 0,
+            y: 20,
+            duration: 0.8,
+            stagger: 0.2,
+            scrollTrigger: {
+                trigger: 'footer',
+                start: 'top 90%',
+            }
+        });
+
+        const modalBtns = document.querySelectorAll('.modal-btn');
+        const modals = document.querySelectorAll('.modal');
+        const closeBtns = document.querySelectorAll('.close-btn');
+
+        modalBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const modalId = btn.getAttribute('data-modal');
+                const modal = document.getElementById(modalId);
+                modal.style.display = 'flex';
+                anime({
+                    targets: modal.querySelector('.modal-content'),
+                    scale: [0.8, 1],
+                    opacity: [0, 1],
+                    easing: 'easeOutQuad',
+                    duration: 300
+                });
+            });
+        });
+
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const modal = btn.closest('.modal');
+                anime({
+                    targets: modal.querySelector('.modal-content'),
+                    scale: [1, 0.8],
+                    opacity: [1, 0],
+                    easing: 'easeInQuad',
+                    duration: 300,
+                    complete: () => modal.style.display = 'none'
+                });
+            });
+        });
+
+        modals.forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    anime({
+                        targets: modal.querySelector('.modal-content'),
+                        scale: [1, 0.8],
+                        opacity: [1, 0],
+                        easing: 'easeInQuad',
+                        duration: 300,
+                        complete: () => modal.style.display = 'none'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
