@@ -9,8 +9,6 @@ Horizon Memories is a web application that lets users create time capsules to st
 - **Time Capsules**: Create capsules with storage limits, file type restrictions, and unlock dates.
 - **File Management**:
   - Multi-file uploads with progress bars, percentage, and ETA.
-  - View files in a modal (images, PDFs, text).
-  - Multi-file deletion with a single warning modal.
 - **File Type Enforcement**: Supports photos (JPEG, PNG, GIF) and text (TXT, PDF, DOC, DOCX) based on capsule settings.
 - **Responsive Design**: Built with Tailwind CSS, animated with GSAP and Anime.js.
 
