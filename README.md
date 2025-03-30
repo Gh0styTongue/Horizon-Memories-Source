@@ -92,10 +92,8 @@ Horizon Memories is a web application that lets users create time capsules to st
 horizon-memories/
 ├── dash/
 │   └── capsule.php      # Main capsule management page
-├── login/
-│   └── (files)          # Login-related files (assumed)
-├── plans/
-│   └── login.php        # Login page (assumed)
+├── login/               # Login pages
+├── plans/               # Plans pages
 ├── index.html           # Entry point for the site
 └── README.md            # This file
 ```
